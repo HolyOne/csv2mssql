@@ -1,5 +1,4 @@
-﻿using LumenWorks.Framework.IO.Csv;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.OleDb;
@@ -9,7 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
+using System.Windows.Forms; 
 
 namespace WindowsFormsApplication2
 {
@@ -349,7 +348,7 @@ namespace WindowsFormsApplication2
 
 
                     using (var csvStreamReader = new StreamReader(filename))
-                    using (CsvReader csvReader = new CsvReader(csvStreamReader, true))
+                    using (LumenWorks.Framework.IO.Csv.CsvReader csvReader = new LumenWorks.Framework.IO.Csv.CsvReader(csvStreamReader, true))
                     {
                         DataTable dt = new DataTable(tablename);
                         int tmpcnt = 0;
@@ -437,14 +436,14 @@ namespace WindowsFormsApplication2
                         if(mode== Ftype.csv)
                         using (StreamReader file = new StreamReader(filename))
                         {
-                                using (CsvReader csv = new CsvReader(file, true, csvSeperatorChar ))
+                                using (LumenWorks.Framework.IO.Csv.CsvReader csv = new LumenWorks.Framework.IO.Csv.CsvReader(file, true, csvSeperatorChar ))
                                // using (CsvReader csv = new CsvReader(file, true, csvSeperatorChar,'\0','\0','#', ValueTrimmingOptions.None))
                                 {
                                     
 
                                     csv.SkipEmptyLines = true;
                                      csv.SupportsMultiline = true;
-                                    csv.MissingFieldAction = MissingFieldAction.ReplaceByNull;
+                                    csv.MissingFieldAction = LumenWorks.Framework.IO.Csv.MissingFieldAction.ReplaceByNull ;
                                 //    csv.DefaultParseErrorAction = ParseErrorAction.AdvanceToNextLine;
                             
                                     SqlBulkCopy copy = new SqlBulkCopy(conn, SqlBulkCopyOptions.KeepIdentity, transaction);

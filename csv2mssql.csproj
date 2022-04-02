@@ -9,9 +9,10 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>csv2mssql</RootNamespace>
     <AssemblyName>csv2mssql</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -37,6 +38,9 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="LumenWorks.Framework.IO, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5ad3ea2f85776344, processorArchitecture=MSIL">
+      <HintPath>packages\LumenWorksCsvReader.4.0.0\lib\net461\LumenWorks.Framework.IO.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -50,23 +54,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Csv\CachedCsvReader.cs" />
-    <Compile Include="Csv\CachedCsvReader.CsvBindingList.cs" />
-    <Compile Include="Csv\CachedCsvReader.CsvPropertyDescriptor.cs" />
-    <Compile Include="Csv\CachedCsvReader.CsvRecordComparer.cs" />
-    <Compile Include="Csv\CsvReader.cs" />
-    <Compile Include="Csv\CsvReader.DataReaderValidations.cs" />
-    <Compile Include="Csv\CsvReader.RecordEnumerator.cs" />
-    <Compile Include="Csv\Events\ParseErrorEventArgs.cs" />
-    <Compile Include="Csv\Exceptions\MalformedCsvException.cs" />
-    <Compile Include="Csv\Exceptions\MissingFieldCsvException.cs" />
-    <Compile Include="Csv\MissingFieldAction.cs" />
-    <Compile Include="Csv\ParseErrorAction.cs" />
-    <Compile Include="Csv\Resources\ExceptionMessage.Designer.cs" />
-    <Compile Include="Csv\ValueTrimmingOptions.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Csv\Resources\ExceptionMessage.resx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -77,6 +66,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -89,9 +79,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="CsvReaderDemoWeb.dll" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
