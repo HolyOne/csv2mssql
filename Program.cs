@@ -8,7 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms; 
+using System.Windows.Forms;
 
 namespace WindowsFormsApplication2
 {
@@ -22,18 +22,13 @@ namespace WindowsFormsApplication2
         /// </summary>
         public static string BuildCreateTableScript(DataTable Table)
         {
-            //    if (!Helper.IsValidDatatable(Table, IgnoreZeroRows: true))
-            //        return string.Empty;
-
             StringBuilder result = new StringBuilder();
             if (!hsh.Contains(Table.TableName))
             {
                 result.AppendFormat("IF OBJECT_ID('dbo.[{0}]', 'U') IS NOT NULL  DROP TABLE dbo.[{0}];\r\n", Table.TableName);
 
                 hsh.Add(Table.TableName);
-
             }
-
             result.AppendFormat("CREATE TABLE [{1}] ({0}   ", Environment.NewLine, Table.TableName);
 
             bool FirstTime = true;
@@ -85,8 +80,6 @@ namespace WindowsFormsApplication2
 
         static TextInfo textInfo = new CultureInfo("en-US", false).TextInfo;
 
-
-
         /// <summary>
         /// Returns the SQL data type equivalent, as a string for use in SQL script generation methods.
         /// </summary>
@@ -119,9 +112,7 @@ namespace WindowsFormsApplication2
 
         public static List<DataTable> access(string filePath)
         {
-
-            //            string baglantiCumlesi = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=|DataDirectory|\\Database1.accdb;Persist Security Info=False;";
-
+            // string baglantiCumlesi = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=|DataDirectory|\\Database1.accdb;Persist Security Info=False;";
 
             string strConn;
             if (filePath.Substring(filePath.LastIndexOf('.')).ToLower() == ".accdb")
@@ -132,8 +123,6 @@ namespace WindowsFormsApplication2
             List<DataTable> dtt = new List<DataTable>();
             try
             {
-
-
                 conn.Open();
                 DataTable schemaTable = conn.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, new object[] { null, null, null, "TABLE" });
                 string fn = System.IO.Path.GetFileNameWithoutExtension(filePath);
@@ -143,8 +132,6 @@ namespace WindowsFormsApplication2
                 foreach (DataRow schemaRow in schemaTable.Rows)
                 {
                     DataTable dtexcel = new DataTable();
-                    //Looping a first Sheet of Xl File
-                    //  schemaRow = schemaTable.Rows[0];
                     string sheet = schemaRow["TABLE_NAME"].ToString();
                     if (!sheet.EndsWith("_"))
                     {
@@ -154,27 +141,19 @@ namespace WindowsFormsApplication2
                         if (dtexcel.Rows.Count > 0)
                         {
                             daexcel.Fill(0, 1000, dtexcel);
-                            //    dtexcel.Locale = CultureInfo.CurrentCulture;
                             dtexcel.TableName = fn + '_' + sheet;
                             dtt.Add(dtexcel);
                         }
 
                     }
-
-
-
                 }
             }
             finally
             {
                 conn.Close();
             }
-
-
             return dtt;
-
         }
-
 
 
         private static OleDbConnection _conn = null;
@@ -191,24 +170,15 @@ namespace WindowsFormsApplication2
             else
                 strConn = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + filePath + ";Extended Properties=\"Excel 8.0;HDR=" + HDR + ";IMEX=0\"";
             _conn = new OleDbConnection(strConn);
-
-
             _conn.Open();
-
-
             return _conn;
-
         }
         public static List<DataTable> exceldata(string filePath, bool assingle = false)
         {
-
             OleDbConnection conn = GetOleConn(filePath);
-
             List<DataTable> dtt = new List<DataTable>();
             try
             {
-
-
                 DataTable schemaTable = conn.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, new object[] { null, null, null, "TABLE" });
                 string fn = System.IO.Path.GetFileNameWithoutExtension(filePath);
 
@@ -217,7 +187,6 @@ namespace WindowsFormsApplication2
                 //Looping Total Sheet of Xl File
                 foreach (DataRow schemaRow in schemaTable.Rows)
                 {
-
                     //Looping a first Sheet of Xl File
                     //  schemaRow = schemaTable.Rows[0];
                     string sheet = schemaRow["TABLE_NAME"].ToString();
@@ -236,10 +205,8 @@ namespace WindowsFormsApplication2
                             dtexcel.Locale = CultureInfo.CurrentCulture;
                             daexcel.Fill(0, 1000, dtexcel);
 
-
                             if (dtexcel.Rows.Count > 0)
                             {
-
                                 //    dtexcel.Locale = CultureInfo.CurrentCulture;
                                 //  dtexcel.TableName = fn + '_' + sheet;
                                 dtexcel.TableName = sheet;
@@ -247,9 +214,6 @@ namespace WindowsFormsApplication2
                             }
                         }
                     }
-
-
-
                 }
 
                 if (assingle) dtt.Add(dtexcelSingle);
@@ -259,9 +223,7 @@ namespace WindowsFormsApplication2
                 //     conn.Close();
             }
 
-
             return dtt;
-
         }
 
         public enum Ftype
@@ -269,7 +231,7 @@ namespace WindowsFormsApplication2
             xls, csv, mdb
         }
 
-     public static      char[] sepchars =  { '\t', ',', '|', ';' };
+        public static char[] sepchars = { '\t', ',', '|', ';' };
 
         /// <summary>
         /// The main entry point for the application.
@@ -278,14 +240,14 @@ namespace WindowsFormsApplication2
         static void Main(string[] args)
         {
             bool singletable = false;
-              char csvSeperatorChar = '\t';
+            char csvSeperatorChar = '\t';
             Console.WriteLine("HolyOne csv 2 mssql importer, by Aytek Ustundag, www.tahribat.com");
-         
+
             if (args.Length < 2)
             {
                 Console.WriteLine("USAGE:");
                 Console.WriteLine("csv2mssql.exe <ConnectionString> <Filename>");
-    Console.WriteLine("EXAMPLE:");
+                Console.WriteLine("EXAMPLE:");
                 Console.WriteLine(@"csv2mssql.exe ""Data Source=(local);Initial Catalog=dbname;Integrated Security=SSPI"" ""data.csv""");
                 Console.WriteLine(@"csv2mssql.exe ""Data Source=(local);Initial Catalog=dbname;Integrated Security=SSPI"" ""excelfile.xlsx""");
 
@@ -328,24 +290,24 @@ namespace WindowsFormsApplication2
                 string ext = System.IO.Path.GetExtension(filename);
                 List<DataTable> dts = new List<DataTable>();
 
-                Ftype mode =  Ftype.csv;
+                Ftype mode = Ftype.csv;
                 if (ext.Equals(".xls", StringComparison.InvariantCultureIgnoreCase) || ext.Equals(".xlsx", StringComparison.InvariantCultureIgnoreCase))
                 {
                     mode = Ftype.xls;
                     dts = exceldata(filename, singletable);
-                   
+
                 }
                 else
                 if (ext.Equals(".accdb", StringComparison.InvariantCultureIgnoreCase) || ext.Equals(".mdb", StringComparison.InvariantCultureIgnoreCase))
                 {
                     mode = Ftype.mdb;
-                    dts =  access(filename);
+                    dts = access(filename);
 
-                }else
+                }
+                else
 
                 {
-                    //csv mode
-
+                    //csv mode 
 
                     using (var csvStreamReader = new StreamReader(filename))
                     using (LumenWorks.Framework.IO.Csv.CsvReader csvReader = new LumenWorks.Framework.IO.Csv.CsvReader(csvStreamReader, true))
@@ -354,59 +316,49 @@ namespace WindowsFormsApplication2
                         int tmpcnt = 0;
                         string myline = "";
 
-
-                        while (  tmpcnt<100)
+                        while (tmpcnt < 100)
                         {
                             myline = csvStreamReader.ReadLine();
-                            if (myline == null) break ;
-                            if(tmpcnt==0)
+                            if (myline == null) break;
+                            if (tmpcnt == 0)
                             {//first line
 
                                 Dictionary<char, int> charcounter = new Dictionary<char, int>();
                                 foreach (char cx in sepchars)
                                 {
-                                    int chcount= myline.Count(f => f == cx);
+                                    int chcount = myline.Count(f => f == cx);
                                     charcounter.Add(cx, chcount);
-
                                 }
-
                                 charcounter = charcounter.OrderByDescending(x => x.Value).ToDictionary(x => x.Key, x => x.Value);
 
                                 csvSeperatorChar = charcounter.First().Key;
-                                Console.WriteLine("Resolving seperator char:" + ((csvSeperatorChar=='\t')?"<TAB>":( csvSeperatorChar.ToString()) ));
+                                Console.WriteLine("Resolving seperator char:" + ((csvSeperatorChar == '\t') ? "<TAB>" : (csvSeperatorChar.ToString())));
 
                             }
                             tmpcnt++;
 
                             string[] cells = myline.Replace(@"""", "").Split(new char[] { csvSeperatorChar });
-                            while (dt.Columns.Count<cells.Length)
+                            while (dt.Columns.Count < cells.Length)
                             {
                                 dt.Columns.Add(cells[dt.Columns.Count]);
                             }
                             dt.Rows.Add(cells);
                         }
 
-                      //  dt.Load(csvReader);
+                        //  dt.Load(csvReader);
                         dts.Add(dt);
                     }
 
                 }
 
-                if(dts.Count==0)
+                if (dts.Count == 0)
                 {
                     Console.WriteLine("No data table found to import");
                     return;
                 }
                 foreach (DataTable dt in dts)
                 {
-
-
                     string str = BuildCreateTableScript(dt);
-
-               
-
-
-
                     SqlConnection conn = new SqlConnection(connstr);
 
                     conn.Open();
@@ -421,8 +373,6 @@ namespace WindowsFormsApplication2
                     catch (Exception exx)
                     {
                         Console.WriteLine("\tWarning:" + exx.Message + " ,Appending...");
-
-
                     }
 
                     DataTable dtexcelSingle = new DataTable(tablename);
@@ -433,89 +383,40 @@ namespace WindowsFormsApplication2
                         int batchsize = 0;
                         Console.WriteLine("Importing table {0}", dt.TableName);
 
-                        if(mode== Ftype.csv)
-                        using (StreamReader file = new StreamReader(filename))
-                        {
-                                using (LumenWorks.Framework.IO.Csv.CsvReader csv = new LumenWorks.Framework.IO.Csv.CsvReader(file, true, csvSeperatorChar ))
-                               // using (CsvReader csv = new CsvReader(file, true, csvSeperatorChar,'\0','\0','#', ValueTrimmingOptions.None))
+                        if (mode == Ftype.csv)
+                            using (StreamReader file = new StreamReader(filename))
+                            {
+                                using (LumenWorks.Framework.IO.Csv.CsvReader csv = new LumenWorks.Framework.IO.Csv.CsvReader(file, true, csvSeperatorChar))
+                                // using (CsvReader csv = new CsvReader(file, true, csvSeperatorChar,'\0','\0','#', ValueTrimmingOptions.None))
                                 {
-                                    
-
                                     csv.SkipEmptyLines = true;
-                                     csv.SupportsMultiline = true;
-                                    csv.MissingFieldAction = LumenWorks.Framework.IO.Csv.MissingFieldAction.ReplaceByNull ;
-                                //    csv.DefaultParseErrorAction = ParseErrorAction.AdvanceToNextLine;
-                            
+                                    csv.SupportsMultiline = true;
+                                    csv.MissingFieldAction = LumenWorks.Framework.IO.Csv.MissingFieldAction.ReplaceByNull;
+                                    //    csv.DefaultParseErrorAction = ParseErrorAction.AdvanceToNextLine;
+
                                     SqlBulkCopy copy = new SqlBulkCopy(conn, SqlBulkCopyOptions.KeepIdentity, transaction);
-                            //  SqlBulkCopy copy = new SqlBulkCopy(connstr, SqlBulkCopyOptions.KeepIdentity );
-                            copy.BulkCopyTimeout = 9999999;
-                            copy.DestinationTableName = tablename;
-                            copy.WriteToServer(csv);
-                                batchsize = copy.RowsCopiedCount();
-                                transaction.Commit();
+                                    //  SqlBulkCopy copy = new SqlBulkCopy(connstr, SqlBulkCopyOptions.KeepIdentity );
+                                    copy.BulkCopyTimeout = 9999999;
+                                    copy.DestinationTableName = tablename;
+                                    copy.WriteToServer(csv);
+                                    batchsize = copy.RowsCopiedCount();
+                                    transaction.Commit();
                                 }
                             }
                         else
                         {
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                             string sheet = dt.TableName;
-                            if ( sheet.EndsWith("_"))
+                            if (sheet.EndsWith("_"))
                             {
                                 continue;
                             }
-                            
-
-
-                OleDbConnection oconn = GetOleConn(filename);
-                           // List<DataTable> dtt = new List<DataTable>();
-                        //  oconn.Open(); 
-
-  try
+                            OleDbConnection oconn = GetOleConn(filename);
+                            try
                             {
-
-
-                               
-                      
-                             //   foreach (DataRow schemaRow in schemaTable.Rows)
                                 {
-
-                                    //Looping a first Sheet of Xl File
-                                    //  schemaRow = schemaTable.Rows[0];
-                               
-                                   // if (!sheet.EndsWith("_"))
                                     {
                                         string query = "SELECT * FROM [" + sheet + "]";
                                         OleDbDataAdapter daexcel = new OleDbDataAdapter(query, oconn);
-                                       /*   DataTable targettable = null;
-                                      
-                                        if ( singletable)
-                                        {
-                                        targettable=(dtexcelSingle);
-                                        }
-                                        else
-                                        {
-
-                                            DataTable dtexcel = new DataTable();
-                                            dtexcel.Locale = CultureInfo.CurrentCulture;
-                                            targettable = dtexcel;
-     
-
-                                        }*/
-                                        
                                         using (OleDbCommand cmd = new OleDbCommand(query, oconn))
                                         {
                                             using (OleDbDataReader rdr = cmd.ExecuteReader())
@@ -529,60 +430,15 @@ namespace WindowsFormsApplication2
                                                 transaction.Commit();
 
                                             }
-
                                         }
-
-                                        /*
-                                            if (!singletable)
-                                            {
-                                                dtt.Add(targettable);
-                                            }*/
-
                                     }
-
-   // if (assingle) dtt.Add(dtexcelSingle);
-
                                 }
-
-                            
                             }
                             finally
                             {
-                              //  oconn.Close();
                             }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                         }
-
-
-
-
                         Console.WriteLine("Finished inserting {0} records.", batchsize);
                     }
                     catch (Exception ex)
@@ -592,29 +448,12 @@ namespace WindowsFormsApplication2
                     }
                     finally
                     {
-                         conn.Close();
+                        conn.Close();
                     }
 
                 }
             }
             //    Console.ReadKey();
-        }
-    }
-}
-
-namespace System.Data.SqlClient
-{
-    using Reflection;
-
-    public static class SqlBulkCopyExtension
-    {
-        const String _rowsCopiedFieldName = "_rowsCopied";
-        static FieldInfo _rowsCopiedField = null;
-
-        public static int RowsCopiedCount(this SqlBulkCopy bulkCopy)
-        {
-            if (_rowsCopiedField == null) _rowsCopiedField = typeof(SqlBulkCopy).GetField(_rowsCopiedFieldName, BindingFlags.NonPublic | BindingFlags.GetField | BindingFlags.Instance);
-            return (int)_rowsCopiedField.GetValue(bulkCopy);
         }
     }
 }
